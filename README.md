@@ -4,7 +4,7 @@ A tool to extract clean conversation transcripts from TLDV HTML, available as bo
 
 ## 🚀 Live Demo
 
-Try the web version: [TLDV Conversation Extractor](https://barshy-tldv-transcript-extractor.netlify.app)
+Try the web version: [TLDV Conversation Extractor](https://nimble-dango-bba094.netlify.app)
 
 ## 🎯 What It Does
 
@@ -13,9 +13,9 @@ This tool extracts clean, readable conversation transcripts from TLDV (The Long 
 ## 📋 Example Output
 
 ```
-Stuart Spratt: Not at the moment. No. Yeah, that's
-Fernando Barsh: It. Listen, listen. Now and Another another project too. Pretty cool. Eh
-Stuart Spratt: Um, what are you talking about this page?
+Speaker 1: Not at the moment. No. Yeah, that's
+Speaker 2: It. Listen, listen. Now and Another another project too. Pretty cool. Eh
+Speaker 1: Um, what are you talking about this page?
 ```
 
 ## 🌐 Web Version
@@ -28,7 +28,7 @@ Stuart Spratt: Um, what are you talking about this page?
 - No installation or dependencies required
 
 ### How to Use the Web Version
-1. Visit [TLDV Conversation Extractor](https://barshy-tldv-transcript-extractor.netlify.app)
+1. Visit [TLDV Conversation Extractor](https://nimble-dango-bba094.netlify.app)
 2. Go to your TLDV transcript page
 3. Right-click on the transcript container and select "Inspect Element"
 4. Find the `<div id="transcript-container">` element
