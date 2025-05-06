@@ -37,6 +37,18 @@ Speaker 1: Um, what are you talking about this page?
 7. Click "Extract Conversation" to process the transcript
 8. Use the "Download" or "Copy to Clipboard" buttons as needed
 
+### Sample Input
+
+We've included a [sample-input.html](sample-input.html) file in this repository that shows the expected HTML structure from TLDV. The sample input would produce this output:
+
+```
+Speaker 1: Hello and welcome to our meeting.
+Speaker 2: Thanks for having me here today.
+Speaker 1: Let's discuss the project timeline.
+```
+
+This sample demonstrates the HTML structure that the tool is designed to parse. You can use it to test the tool or understand what kind of HTML to copy from TLDV.
+
 ### Installation (For Developers)
 
 Want to host your own version? You have several options:
