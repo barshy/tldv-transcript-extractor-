@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLDV Conversation Extractor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+            text-align: center;
+        }
+        .description {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .instructions ol {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .preview pre {
+            white-space: pre-wrap;
+            margin: 0;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TLDV Conversation Extractor</h1>
+        <p class="description">Extract clean conversation transcripts from TLDV HTML</p>
+        
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ol>
+                <li>Go to your TLDV transcript page</li>
+                <li>Right-click on the transcript container and select "Inspect Element"</li>
+                <li>Find the <code>&lt;div id="transcript-container"&gt;</code> element</li>
+                <li>Right-click on it and select "Copy" → "Copy outerHTML"</li>
+                <li>Paste the copied HTML below</li>
+                <li>Click "Extract Conversation" to process the transcript</li>
+                <li>Use the "Download" button to save the result as a text file</li>
+            </ol>
+        </div>
+        
+        <textarea id="html-input" placeholder="Paste the TLDV transcript HTML here..." required></textarea>
+        
+        <div class="button-group">
+            <button id="extract-button">Extract Conversation</button>
+            <button id="download-button" class="hidden" style="background-color: #2ecc71;">Download Transcript</button>
+            <button id="copy-button" class="hidden" style="background-color: #9b59b6;">Copy to Clipboard</button>
+        </div>
+        
+        <div class="preview hidden" id="preview-container">
+            <h3>Extracted Conversation:</h3>
+            <pre id="preview-content"></pre>
+        </div>
+        
+        <footer>
+            <p>This tool works entirely in your browser. No data is sent to any server.</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM elements
+        const htmlInput = document.getElementById('html-input');
+        const extractButton = document.getElementById('extract-button');
+        const downloadButton = document.getElementById('download-button');
+        const copyButton = document.getElementById('copy-button');
+        const previewContainer = document.getElementById('preview-container');
+        const previewContent = document.getElementById('preview-content');
+        
+        // Store the extracted text
+        let extractedText = '';
+        
+        // Extract conversation from HTML
+        function extractConversation(html) {
+            // Parse the HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Find all paragraph elements with data-index attribute
+            const paragraphs = doc.querySelectorAll('p[data-index]');
+            
+            // Process each paragraph to extract speaker and text
+            const conversation = [];
+            let currentSpeaker = null;
+            let currentText = [];
+            
+            paragraphs.forEach(p => {
+                // Extract speaker name
+                const speakerElement = p.querySelector('span[data-speaker="true"] span');
+                if (speakerElement) {
+                    const speaker = speakerElement.textContent.trim();
+                    
+                    // If we have a new speaker, save the previous one's text
+                    if (currentSpeaker && currentSpeaker !== speaker && currentText.length > 0) {
+                        conversation.push({
+                            speaker: currentSpeaker,
+                            text: currentText.join(' ')
+                        });
+                        currentText = [];
+                    }
+                    
+                    currentSpeaker = speaker;
+                }
+                
+                // Extract all text spans in this paragraph
+                const textSpans = p.querySelectorAll('span[data-speaker="false"]');
+                textSpans.forEach(span => {
+                    const text = span.textContent.trim();
+                    if (text) {
+                        currentText.push(text);
+                    }
+                });
+            });
+            
+            // Add the last speaker's text
+            if (currentSpeaker && currentText.length > 0) {
+                conversation.push({
+                    speaker: currentSpeaker,
+                    text: currentText.join(' ')
+                });
+            }
+            
+            // Format the conversation
+            return conversation.map(item => `${item.speaker}: ${item.text}`).join('\n');
+        }
+        
+        // Event listeners
+        extractButton.addEventListener('click', () => {
+            const html = htmlInput.value.trim();
+            
+            if (!html) {
+                alert('Please paste the HTML content first.');
+                return;
+            }
+            
+            try {
+                // Extract the conversation
+                extractedText = extractConversation(html);
+                
+                // Display the result
+                previewContent.textContent = extractedText;
+                previewContainer.classList.remove('hidden');
+                downloadButton.classList.remove('hidden');
+                copyButton.classList.remove('hidden');
+            } catch (error) {
+                alert('Error processing the HTML. Please make sure you\'ve copied the correct element.');
+                console.error(error);
+            }
+        });
+        
+        // Download the extracted conversation
+        downloadButton.addEventListener('click', () => {
+            if (!extractedText) return;
+            
+            const blob = new Blob([extractedText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'conversation.txt';
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        });
+        
+        // Copy to clipboard
+        copyButton.addEventListener('click', () => {
+            if (!extractedText) return;
+            
+            navigator.clipboard.writeText(extractedText)
+                .then(() => {
+                    const originalText = copyButton.textContent;
+                    copyButton.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyButton.textContent = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    alert('Failed to copy text: ' + err);
+                });
+        });
+    </script>
+</body>
+</html>
