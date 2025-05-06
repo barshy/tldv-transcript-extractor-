@@ -4,7 +4,7 @@ A tool to extract clean conversation transcripts from TLDV HTML, available as bo
 
 ## 🚀 Live Demo
 
-Try the web version: [TLDV Conversation Extractor](https://tldv-transcript-extractor.netlify.app)
+Try the web version: [TLDV Conversation Extractor](https://barshy-tldv-transcript-extractor.netlify.app)
 
 ## 🎯 What It Does
 
@@ -28,7 +28,7 @@ Stuart Spratt: Um, what are you talking about this page?
 - No installation or dependencies required
 
 ### How to Use the Web Version
-1. Visit [TLDV Conversation Extractor](https://tldv-transcript-extractor.netlify.app)
+1. Visit [TLDV Conversation Extractor](https://barshy-tldv-transcript-extractor.netlify.app)
 2. Go to your TLDV transcript page
 3. Right-click on the transcript container and select "Inspect Element"
 4. Find the `<div id="transcript-container">` element
