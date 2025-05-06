@@ -1,34 +1,14 @@
 # TLDV Conversation Extractor
 
-A simple tool to extract clean conversation transcripts from TLDV HTML.
+A tool to extract clean conversation transcripts from TLDV HTML, available as both a web app and a Python script.
 
 ## 🚀 Live Demo
 
-Try it now: [TLDV Conversation Extractor](https://tldv-transcript-extractor.netlify.app)
+Try the web version: [TLDV Conversation Extractor](https://tldv-transcript-extractor.netlify.app)
 
 ## 🎯 What It Does
 
-This tool helps you extract clean, readable conversation transcripts from TLDV (The Long Distance Video) meeting recordings. It takes the HTML of a TLDV transcript and converts it into a simple text format with speaker names and their dialogue.
-
-## ✨ Features
-
-- Extract speaker names and dialogue from TLDV transcripts
-- Format conversations in a clean, readable format
-- Works entirely in the browser - no data is sent to any server
-- Download the extracted conversation as a text file
-- Copy the extracted conversation to clipboard
-- Privacy-focused: all processing happens locally in your browser
-- No account or login required
-
-## 🔍 How to Use
-
-1. Go to your TLDV transcript page
-2. Right-click on the transcript container and select "Inspect Element"
-3. Find the `<div id="transcript-container">` element
-4. Right-click on it and select "Copy" → "Copy outerHTML"
-5. Paste the copied HTML into the tool
-6. Click "Extract Conversation" to process the transcript
-7. Use the "Download" button to save the result as a text file or "Copy to Clipboard" to copy it
+This tool extracts clean, readable conversation transcripts from TLDV (The Long Distance Video) meeting recordings. It processes the HTML of a TLDV transcript and converts it into a simple text format with speaker names and their dialogue.
 
 ## 📋 Example Output
 
@@ -36,19 +16,99 @@ This tool helps you extract clean, readable conversation transcripts from TLDV (
 Stuart Spratt: Not at the moment. No. Yeah, that's
 Fernando Barsh: It. Listen, listen. Now and Another another project too. Pretty cool. Eh
 Stuart Spratt: Um, what are you talking about this page?
-Fernando Barsh: But this there's something that it looks really cool, too.
 ```
+
+## 🌐 Web Version
+
+### Features
+- Works entirely in your browser - no data is sent to any server
+- Privacy-focused: all processing happens locally
+- Download the extracted conversation as a text file
+- Copy the extracted conversation to clipboard
+- No installation or dependencies required
+
+### How to Use the Web Version
+1. Visit [TLDV Conversation Extractor](https://tldv-transcript-extractor.netlify.app)
+2. Go to your TLDV transcript page
+3. Right-click on the transcript container and select "Inspect Element"
+4. Find the `<div id="transcript-container">` element
+5. Right-click on it and select "Copy" → "Copy outerHTML"
+6. Paste the copied HTML into the tool
+7. Click "Extract Conversation" to process the transcript
+8. Use the "Download" or "Copy to Clipboard" buttons as needed
+
+### Installation (For Developers)
+
+Want to host your own version? You have several options:
+
+#### Netlify
+1. Fork this repository
+2. Sign up for [Netlify](https://app.netlify.com/)
+3. Click "New site from Git" and select your forked repository
+4. Configure build settings (leave defaults)
+5. Click "Deploy site"
+
+#### Cloudflare Pages
+1. Fork this repository
+2. Sign up for [Cloudflare Pages](https://pages.cloudflare.com/)
+3. Create a new project and connect your GitHub account
+4. Select your forked repository
+5. Configure with these settings:
+   - Build command: (leave empty)
+   - Build output directory: `/`
+6. Click "Save and Deploy"
+
+#### Vercel
+1. Fork this repository
+2. Sign up for [Vercel](https://vercel.com/)
+3. Create a new project and import your forked repository
+4. Configure with default settings
+5. Click "Deploy"
+
+## 💻 Python Script Version
+
+For those who prefer a command-line tool or want to process files in batch, we provide a Python script.
+
+### Requirements
+- Python 3.6+
+- BeautifulSoup4 (`pip install beautifulsoup4`)
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/barshy/tldv-transcript-extractor-.git
+
+# Navigate to the directory
+cd tldv-transcript-extractor-
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Usage
+```bash
+# Process a single file
+python extract_conversation.py input_file.txt [output_file.txt]
+
+# If output file is not specified, result is printed to console
+python extract_conversation.py conversation1.txt
+```
+
+### Python Script Features
+- Process TLDV transcript HTML files from the command line
+- Save output to a file or print to console
+- Can be integrated into other Python projects
+- Suitable for batch processing multiple files
 
 ## 🔒 Privacy
 
-This tool works entirely in your browser. No data is sent to any server. Your transcript data never leaves your computer.
+Both versions (web and Python) process all data locally. Your transcript data never leaves your computer.
 
-## 💻 Technical Details
+## 💡 Technical Details
 
-- Built with vanilla HTML, CSS, and JavaScript
-- No external dependencies or frameworks
-- Uses the browser's built-in DOMParser to process HTML
-- Implements the Blob API for file downloads
+- Web version: Built with vanilla HTML, CSS, and JavaScript
+- Python version: Uses BeautifulSoup4 for HTML parsing
+- No external API calls or data collection
 
 ## 🤝 Contributing
 
@@ -62,9 +122,4 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgements
-
-- [TLDV](https://tldv.io) for their meeting recording service
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) for inspiring the HTML parsing approach
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
